@@ -47,7 +47,7 @@ public class MessageServiceImpl implements MessageService {
 	public void addMessageToDb(String clientId, Notification message) {
 		
 		// set the status of the email to success
-		if(message.isValidMsgNotification()) {
+		if(message.isToMsgNumValid()) {
 			message.setStatus(NotificationStatus.SUCCESS);
 		} else {
 			message.setStatus(NotificationStatus.FAILURE);

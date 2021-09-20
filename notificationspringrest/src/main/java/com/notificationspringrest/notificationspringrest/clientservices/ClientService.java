@@ -8,5 +8,3 @@ import com.notificationspringrest.notificationspringrest.notificationservices.No
 public interface ClientService {
 	public List<Client> getClients();
 }
-
-// comment

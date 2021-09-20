@@ -65,11 +65,17 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 		// maintain two separate lists for storing mails and messages
 		for(Notification notification : allNotifications) {
-			if(notification.getType() == NotificationType.MESSAGE) {
+			if(notification.getType() == NotificationType.MESSAGE && notification.isFromMsgNumValid()) {
 				msgService.addMessageToDb(clientId, notification);
-			} else if(notification.getType() == NotificationType.MAIL) {
+				continue;
+			} 
+			
+			if(notification.getType() == NotificationType.MAIL && notification.isFromEmailAddValid()) {
 				emailService.addEmailToDb(clientId, notification);
+				continue;
 			}
+			// LOGGER.info("addNotificationsToDb: {},{},{},{},{}", notification.getType(), notification.getFromEmailId(), notification.getToEmailId(), notification.getfromPhoneNum(), notification.gettoPhoneNum());
+			System.out.println("addNotificationsToDb: Should not reach this branch");
 		}
 
 	}

@@ -56,9 +56,10 @@ public class EmailServiceImpl implements EmailService {
 	public void addEmailToDb(String clientId, Notification emailNotification) {
 		
 		// set the status of the email to success
-		if(emailNotification.isValidEmailNotification()) {
+		if(emailNotification.isToEmailAddValid()) {
 			emailNotification.setStatus(NotificationStatus.SUCCESS);
 		} else {
+			System.out.println("To-Email Notification NOT VALID");
 			emailNotification.setStatus(NotificationStatus.FAILURE);
 		}
 		
