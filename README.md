@@ -20,6 +20,7 @@ NotificationService/notificationspringrest/src/main/java/com/
 1. The attachment links are web links instead of local-links
 2. Store the wishlist of a client
 3. To be able to send an email with a table of wishlisted item name, price, link to the item
+4. Unit Testing
 
 
 ## Tutorial
