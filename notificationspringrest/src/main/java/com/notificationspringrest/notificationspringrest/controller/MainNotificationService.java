@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.notificationspringrest.notificationspringrest.entities.Mail;
 // import com.springrest.springrest.entities.Client;
 import com.notificationspringrest.notificationspringrest.entities.Notification;
 import com.notificationspringrest.notificationspringrest.entities.NotificationStatus;
+import com.notificationspringrest.notificationspringrest.entities.NotificationType;
 import com.notificationspringrest.notificationspringrest.entities.ResponseModel;
 import com.notificationspringrest.notificationspringrest.entities.Status;
 import com.notificationspringrest.notificationspringrest.exceptions.QueryNotificationException;
@@ -44,9 +46,9 @@ public class MainNotificationService {
 		return rModel;
 	}
 	
-	// post request for notification service
-	@PostMapping("/Notifications/clientId/{clientId}")
-	public ResponseModel subscribeNotifications(@PathVariable String clientId, @RequestBody List<Notification> listOfNotifications) {
+	// post request for mail notification service
+	@PostMapping("/Notifications/Mails/clientId/{clientId}")
+	public ResponseModel subscribeNotifications(@PathVariable String clientId, @RequestBody List<Mail> listOfNotifications) {
 		ResponseModel rModel = new ResponseModel(Status.SUCCESS);
 		try {
 			this.notifyService.addNotificationsToDb(clientId, listOfNotifications);
@@ -60,12 +62,12 @@ public class MainNotificationService {
 	}
 	
 	
-	// get all messages
+	// get all notifications sent by a client {messages / mails}
 	@GetMapping("/Notifications/clientId/{clientId}")
 	public ResponseModel getAllNotifications(@PathVariable String clientId) throws QueryNotificationException {
 		ResponseModel rModel = new ResponseModel(Status.SUCCESS);
 		try {
-			List<Notification> notificationList = this.notifyService.getNotifications(clientId, null, null, null);
+			List<Notification> notificationList = this.notifyService.getNotifications(clientId, null, null, null, NotificationType.ALL);
 			rModel.setData(notificationList);
 		} catch(Exception e) {
 			rModel = new ResponseModel(Status.FAILED);
@@ -76,8 +78,8 @@ public class MainNotificationService {
 		
 	}
 	
-	// get all messages filtered by date
-	@GetMapping("/Notifications/clientId/{clientId}/startTime/{from}/endTime/{to}")
+	// get all mails filtered by date
+	@GetMapping("/Notifications/Mails/clientId/{clientId}/startTime/{from}/endTime/{to}")
 	public ResponseModel getAllNotifications(@PathVariable String clientId, @PathVariable String from, @PathVariable String to) throws QueryNotificationException {
 		ResponseModel rModel = new ResponseModel(Status.SUCCESS);
 		try {
@@ -87,7 +89,7 @@ public class MainNotificationService {
 			LocalDateTime fromTime = LocalDateTime.parse(from, formatter);
 			LocalDateTime toTime = LocalDateTime.parse(to, formatter);
 
-			List<Notification> notificationList = this.notifyService.getNotifications(clientId, fromTime, toTime, null);
+			List<Notification> notificationList = this.notifyService.getNotifications(clientId, fromTime, toTime, null, NotificationType.MAIL);
 			rModel.setData(notificationList);
 		} catch (Exception e) {
 			rModel = new ResponseModel(Status.FAILED);
@@ -99,11 +101,11 @@ public class MainNotificationService {
 	}
 	
 	// get all messages filtered by status
-	@GetMapping("/Notifications/clientId/{clientId}/status/{status}")
+	@GetMapping("/Notifications/Mails/clientId/{clientId}/status/{status}")
 	public ResponseModel getAllNotifications(@PathVariable String clientId, @PathVariable String status) throws QueryNotificationException {
 		ResponseModel rModel = new ResponseModel(Status.SUCCESS);
 		try {
-			List<Notification> notificationList = this.notifyService.getNotifications(clientId, null, null, NotificationStatus.valueOf(status));
+			List<Notification> notificationList = this.notifyService.getNotifications(clientId, null, null, NotificationStatus.valueOf(status), NotificationType.MAIL);
 			rModel.setData(notificationList);
 		} catch (Exception e) {
 			rModel = new ResponseModel(Status.FAILED);
@@ -113,10 +115,19 @@ public class MainNotificationService {
 		return rModel;
 	}
 	
-//	// statistics APi
-//	@GetMapping("/Notifications/Summary")
-//  my return type is
-// 	Pair<clientId, Pair<DateTime, List<Notification>>
-// 	This is sorted grouped by clientId and partitioned by date
+	// unimplemented APIs
+	
+	/*
+	 * @PostMapping("/Notifications/Messages/clientId/{clientId}")
+	 * @GetMapping("/Notifications/Messages/clientId/{clientId}/startTime/{from}/endTime/{to}")
+	 * @GetMapping("/Notifications/Messages/clientId/{clientId}/status/{status}")
+	 * 
+	 * 
+	*/
+	
+	/*
+	 * @GetMapping("/Notifications/Summary")
+	 * Pair<clientId, Pair<DateTime, List<Notification>>
+	 */
 
 }

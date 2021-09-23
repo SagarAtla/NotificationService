@@ -1,3 +1,4 @@
+/*
 package com.notificationspringrest.notificationspringrest.notificationservices;
 
 import java.time.LocalDateTime;
@@ -12,3 +13,5 @@ public interface MessageService {
 	public List<Notification> getMessages(String clientId, LocalDateTime from, LocalDateTime to);
 	public List<Notification> getMessages(String clientId, NotificationStatus status);
 }
+
+*/
